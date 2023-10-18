@@ -4,40 +4,61 @@ function getComputerChoice() {
 }
 
 function playRound(playerChoice, computerChoice) {
-	playerChoice.toLowerCase();
-
 	if (playerChoice == computerChoice) {
-		return 'tie';
+		scoreTracker('tie', playerChoice, computerChoice);
 	} else if (
 		(playerChoice == 'rock' && computerChoice == 'paper') ||
 		(playerChoice == 'paper' && computerChoice == 'scissors') ||
 		(playerChoice == 'scissors' && computerChoice == 'rock')
 	) {
-		return false;
+		scoreTracker(false, playerChoice, computerChoice);
 	} else {
-		return true;
+		scoreTracker(true, playerChoice, computerChoice);
 	}
 }
 
-function game() {
-	let playerScore = 0;
-	let computerScore = 0;
-	for (let i = 0; i <= 4; i++) {
-		let playerChoice = prompt('Enter move');
-		let computerChoice = getComputerChoice();
+let playerScore = 0;
+let computerScore = 0;
 
-		let result = playRound(playerChoice, computerChoice);
-		if (result == true) {
-			playerScore++;
-			console.log(`You Win! ${playerChoice} beats ${computerChoice}`);
-		} else if (result == false) {
-			computerScore++;
-			console.log(`You Lose! ${computerChoice} beats ${playerChoice}`);
-		} else {
-			console.log(`Tie! ${computerChoice} matches ${playerChoice}`);
-		}
-		console.log(`Player: ${playerScore} , Computer: ${computerScore}`);
+function scoreTracker(result, playerChoice, computerChoice) {
+	if (result == true) {
+		playerScore++;
+		console.log(`You Win! ${playerChoice} beats ${computerChoice}`);
+	} else if (result == false) {
+		computerScore++;
+		console.log(`You Lose! ${computerChoice} beats ${playerChoice}`);
+	} else {
+		console.log(`Tie! ${computerChoice} matches ${playerChoice}`);
+	}
+	console.log(`Player: ${playerScore} , Computer: ${computerScore}`);
+
+	checkWinner(playerScore, computerScore);
+}
+
+function checkWinner(playerScore, computerScore) {
+	if (playerScore == 5) {
+		console.log('Player Wins!');
+		playerScore = 0;
+		computerScore = 0;
+		return;
+	} else if (computerScore == 5) {
+		console.log('Computer Wins :(');
+		playerScore = 0;
+		computerScore = 0;
+		return;
 	}
 }
 
-game();
+const selectRock = document.querySelector('#rock');
+const selectPaper = document.querySelector('#paper');
+const selectScissors = document.querySelector('#scissors');
+
+selectRock.addEventListener('click', () => {
+	playRound('rock', getComputerChoice());
+});
+selectPaper.addEventListener('click', () => {
+	playRound('paper', getComputerChoice());
+});
+selectScissors.addEventListener('click', () => {
+	playRound('scissors', getComputerChoice());
+});
