@@ -1,6 +1,9 @@
+let playerScore = 0;
+let computerScore = 0;
+
 function getComputerChoice() {
-	let moves = ['rock', 'paper', 'scissors'];
-	return moves[Math.floor(Math.random() * 3)];
+	let moves = ['rock'];
+	return moves[Math.floor(Math.random() * moves.length)];
 }
 
 function playRound(playerChoice, computerChoice) {
@@ -17,35 +20,59 @@ function playRound(playerChoice, computerChoice) {
 	}
 }
 
-let playerScore = 0;
-let computerScore = 0;
-
 function scoreTracker(result, playerChoice, computerChoice) {
+	let message = '';
 	if (result == true) {
 		playerScore++;
-		console.log(`You Win! ${playerChoice} beats ${computerChoice}`);
+		message = `Nice job lil [redacted] ${playerChoice} beats ${computerChoice}`;
+		scoreUpdate(message);
 	} else if (result == false) {
 		computerScore++;
-		console.log(`You Lose! ${computerChoice} beats ${playerChoice}`);
+		message = `Dumba** ${computerChoice} beats ${playerChoice}`;
+		scoreUpdate(message);
 	} else {
-		console.log(`Tie! ${computerChoice} matches ${playerChoice}`);
+		message = `Bruh... ${computerChoice} matches ${playerChoice}`;
+		scoreUpdate(message);
 	}
-	console.log(`Player: ${playerScore} , Computer: ${computerScore}`);
-
-	checkWinner(playerScore, computerScore);
 }
 
 function checkWinner(playerScore, computerScore) {
 	if (playerScore == 5) {
-		console.log('Player Wins!');
-		playerScore = 0;
-		computerScore = 0;
-		return;
+		resetScore();
 	} else if (computerScore == 5) {
-		console.log('Computer Wins :(');
-		playerScore = 0;
-		computerScore = 0;
-		return;
+		resetScore();
+	}
+}
+
+function resetScore() {
+	playerScore = 0;
+	computerScore = 0;
+}
+
+function scoreUpdate(message) {
+	tempPlayerScore = playerScore;
+	tempComputerScore = computerScore;
+
+	checkWinner(playerScore, computerScore);
+
+	const scoreDisplay = document.querySelector('.score-display');
+	if (scoreDisplay.querySelector('img') != null) {
+		scoreDisplay.removeChild(scoreDisplay.querySelector('img'));
+	}
+	const currentScore = scoreDisplay.querySelector('.current-score');
+	currentScore.textContent = `Player: ${tempPlayerScore} Computer: ${tempComputerScore}`;
+
+	const messageDisplay = scoreDisplay.querySelector('.message');
+	messageDisplay.textContent = message;
+
+	if (tempPlayerScore == 5) {
+		const winImage = document.createElement('img');
+		winImage.setAttribute('src', './images/smiling-tooth.webp');
+		scoreDisplay.appendChild(winImage);
+	} else if (tempComputerScore == 5) {
+		const lossImage = document.createElement('img');
+		lossImage.setAttribute('src', './images/cry.gif');
+		scoreDisplay.appendChild(lossImage);
 	}
 }
 
