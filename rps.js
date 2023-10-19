@@ -2,7 +2,7 @@ let playerScore = 0;
 let computerScore = 0;
 
 function getComputerChoice() {
-	let moves = ['rock'];
+	let moves = ['rock', 'paper', 'scissors'];
 	return moves[Math.floor(Math.random() * moves.length)];
 }
 
